@@ -30,7 +30,10 @@ try:
         validate_input_file,
         save_transcript_results,
         print_project_banner,
-        cleanup_temp_files
+        cleanup_temp_files,
+        check_models_cache,
+        setup_models_cache,
+        print_models_info
     )
     
     MODULES_OK = True
@@ -216,6 +219,16 @@ def main():
         except KeyboardInterrupt:
             print("\n程序被用户中断")
             return
+    else:
+        # 检查和设置模型缓存
+        print("\n📦 检查模型缓存...")
+        cache_info = check_models_cache()
+        
+        if not cache_info['exists']:
+            print("首次运行，设置模型缓存目录...")
+            setup_models_cache()
+        
+        print_models_info()
     
     # 检查模块
     if not MODULES_OK:

@@ -191,6 +191,158 @@ def check_dependencies():
     return True
 
 
+def check_models_cache(models_dir=r"C:\Users\29873\code\Summer-projects\auto-transcript\models"):
+    """
+    检查模型缓存状态
+    
+    Args:
+        models_dir: 模型缓存目录
+        
+    Returns:
+        dict: 缓存状态信息
+    """
+    models_path = Path(models_dir)
+    
+    try:
+        if not models_path.exists():
+            return {
+                'exists': False,
+                'size_mb': 0,
+                'file_count': 0,
+                'message': '模型缓存目录不存在，首次运行将自动创建'
+            }
+        
+        # 计算缓存大小和文件数量
+        total_size = 0
+        file_count = 0
+        
+        for file_path in models_path.rglob("*"):
+            if file_path.is_file():
+                total_size += file_path.stat().st_size
+                file_count += 1
+        
+        size_mb = total_size / (1024 * 1024)
+        
+        return {
+            'exists': True,
+            'size_mb': round(size_mb, 1),
+            'file_count': file_count,
+            'path': str(models_path),
+            'message': f'模型缓存已存在，大小: {size_mb:.1f}MB'
+        }
+        
+    except Exception as e:
+        return {
+            'exists': False,
+            'error': str(e),
+            'message': f'检查模型缓存时出错: {e}'
+        }
+
+
+def setup_models_cache(models_dir=r"C:\Users\29873\code\Summer-projects\auto-transcript\models"):
+    """
+    设置模型缓存目录
+    
+    Args:
+        models_dir: 模型缓存目录
+    """
+    try:
+        models_path = Path(models_dir)
+        models_path.mkdir(parents=True, exist_ok=True)
+        
+        # 创建README文件
+        readme_file = models_path / "README.md"
+        if not readme_file.exists():
+            with open(readme_file, 'w', encoding='utf-8') as f:
+                f.write("""# 模型缓存目录
+
+这个目录用于缓存Auto Transcript项目的深度学习模型。
+
+## 包含的模型文件
+- **inception_resnet_v1.pth**: FaceNet人脸特征提取模型权重
+- **model_info.txt**: 模型信息文件
+- MTCNN模型由facenet-pytorch自动管理
+
+## 缓存优势
+- 避免重复下载模型（约110MB）
+- 提高程序启动速度
+- 支持离线运行
+
+## 清理缓存
+如需清理缓存，可以直接删除此目录，程序会自动重新下载。
+
+缓存位置: {models_dir}
+""")
+        
+        print(f"✅ 模型缓存目录设置完成: {models_path}")
+        
+    except Exception as e:
+        print(f"❌ 设置模型缓存目录失败: {e}")
+
+
+def print_models_info(models_dir=r"C:\Users\29873\code\Summer-projects\auto-transcript\models"):
+    """打印模型缓存信息"""
+    cache_info = check_models_cache(models_dir)
+    
+    print("\n📦 模型缓存信息:")
+    print("-" * 40)
+    print(cache_info['message'])
+    
+    if cache_info['exists']:
+        print(f"  路径: {cache_info['path']}")
+        print(f"  文件数量: {cache_info['file_count']}")
+        print(f"  总大小: {cache_info['size_mb']} MB")
+    
+    print("-" * 40)
+
+
+def get_project_info():
+    """
+    检查项目依赖
+    
+    Returns:
+        bool: 依赖是否完整
+    """
+    required_packages = [
+        'cv2',
+        'PIL',
+        'numpy',
+        'moviepy',
+        'pydub',
+        'speech_recognition',
+        'googletrans'
+    ]
+    
+    missing_packages = []
+    
+    for package in required_packages:
+        try:
+            if package == 'cv2':
+                import cv2
+            elif package == 'PIL':
+                from PIL import Image
+            elif package == 'numpy':
+                import numpy
+            elif package == 'moviepy':
+                from moviepy.editor import VideoFileClip
+            elif package == 'pydub':
+                from pydub import AudioSegment
+            elif package == 'speech_recognition':
+                import speech_recognition
+            elif package == 'googletrans':
+                from googletrans import Translator
+        except ImportError:
+            missing_packages.append(package)
+    
+    if missing_packages:
+        print(f"缺少以下依赖包: {', '.join(missing_packages)}")
+        print("请运行: pip install opencv-python pillow numpy moviepy pydub SpeechRecognition googletrans==4.0.0rc1")
+        return False
+    
+    print("所有依赖包检查通过")
+    return True
+
+
 def get_project_info():
     """
     获取项目信息
