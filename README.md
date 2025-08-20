@@ -34,15 +34,12 @@ AI-for-Healthcare-Innovation/
 │   └── main.py                     # 主程序入口
 │
 ├── notebooks/                       # Jupyter笔记本
-│   ├── train_10_epochs.ipynb       # 10轮训练版本
-│   ├── train_50_epochs.ipynb       # 50轮训练版本
-│   └── project_template.ipynb      # 项目模板
+│   ├── train_10_epochs.ipynb       # 10轮快速训练版本
+│   └── train_50_epochs.ipynb       # 50轮完整训练版本
 │
 ├── docs/                           # 文档文件夹
-│   ├── python_tutorial.md          # Python编程教学文档
-│   ├── model_summary_10epochs.txt  # 10轮模型摘要
-│   ├── model_summary_50epochs.txt  # 50轮模型摘要
-│   └── api_documentation.md        # API文档
+│   ├── python_basics.ipynb         # Python基础操作教程
+│   └── proj_tech_classification.ipynb  # 项目技术分类模板
 │
 ├── data/                           # 数据文件夹（本地存在，Git中隐藏）
 │   ├── train_covid19/             # 训练数据
@@ -148,14 +145,11 @@ python src/main.py --mode compare
 
 - **train_10_epochs.ipynb** - 10轮快速训练版本，适合概念验证和快速测试，训练时间约30-60分钟
 - **train_50_epochs.ipynb** - 50轮完整训练版本，包含增强的数据处理和更深的分类器，适合生产部署
-- **project_template.ipynb** - 项目模板和示例代码，帮助理解项目结构
 
 ### 文档
 
-- **python_tutorial.md** - Python编程基础教程
-- **model_summary_10epochs.txt** - 10轮模型的架构和性能摘要
-- **model_summary_50epochs.txt** - 50轮模型的详细分析报告
-- **api_documentation.md** - 代码API使用说明
+- **python_basics.ipynb** - Python基础操作教程，包含项目所需的基础编程知识
+- **proj_tech_classification.ipynb** - 项目技术分类模板，展示深度学习在医学影像分类中的应用方法
 
 ## 配置参数
 
